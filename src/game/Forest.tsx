@@ -14,10 +14,19 @@ export default function Forest({character,pet,onMushroom,onNpc}:Props) {
       companionLabel!:Phaser.GameObjects.Text;
       cursors!:Phaser.Types.Input.Keyboard.CursorKeys;
       keys!:Record<string,Phaser.Input.Keyboard.Key>;
-      spots:{id:number;x:number;y:number}[]=[];
+      spots:{id:number;x:number;y:number;graphic:Phaser.GameObjects.Graphics}[]=[];
       speed=190;
+      handleMushroomRemove=(event:Event)=>{
+        const id=Number((event as CustomEvent<number>).detail);
+        const index=this.spots.findIndex(o=>o.id===id);
+        if(index<0)return;
+        const [spot]=this.spots.splice(index,1);
+        spot.graphic.destroy();
+      };
       constructor(){super("forest");}
       create(){
+        window.addEventListener("spore:mushroom-remove",this.handleMushroomRemove);
+        this.events.once(Phaser.Scenes.Events.SHUTDOWN,()=>window.removeEventListener("spore:mushroom-remove",this.handleMushroomRemove));
         const w=1600,h=1050;
         this.cameras.main.setBounds(0,0,w,h); this.physics.world.setBounds(0,0,w,h);
         this.add.rectangle(w/2,h/2,w,h,0x243d32);
@@ -72,7 +81,7 @@ export default function Forest({character,pet,onMushroom,onNpc}:Props) {
         g.fillStyle(parseInt(data.color.slice(1),16));g.fillEllipse(x,y-8,35,19);
         g.lineStyle(2,0x563b39);g.strokeEllipse(x,y-8,35,19);
         g.fillStyle(0xfff0d0);g.fillCircle(x-8,y-10,3);g.fillCircle(x+7,y-5,2);
-        this.spots.push({id,x,y});
+        this.spots.push({id,x,y,graphic:g});
       }
       move(){
         const left=this.cursors.left.isDown||this.keys.A.isDown, right=this.cursors.right.isDown||this.keys.D.isDown;
