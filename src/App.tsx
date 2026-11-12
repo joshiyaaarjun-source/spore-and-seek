@@ -122,6 +122,7 @@ export default function App() {
     if (questAccepted && !save.questComplete && discovered.length >= 3) {
       notify("You have enough discoveries to return to Elder Willow!");
     }
+    window.dispatchEvent(new CustomEvent("spore:mushroom-remove", { detail: id }));
     setModal(null);
     setSelectedMushroom(null);
   };
