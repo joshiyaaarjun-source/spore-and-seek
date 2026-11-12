@@ -153,6 +153,17 @@ export default function App() {
         <div className="brand-mark">✦ SPORE <i>&</i> SEEK ✦</div>
         <p className="tagline">a tiny foraging adventure</p>
         <div className="title-mushrooms"><MushroomSprite color="#d67b87" size={48}/><MushroomSprite color="#8c7db2" size={38}/><MushroomSprite color="#d6a15e" size={48}/></div>
+        <div className="title-stage" aria-hidden="true">
+          <span className="stage-moon"/>
+          <span className="stage-treehouse"><i/><i/><i/></span>
+          <span className="stage-lantern lantern-left"/>
+          <span className="stage-lantern lantern-right"/>
+          <PixelCharacter character="Twix" className="title-hero title-twix"/>
+          <PixelCharacter character="Leaf" className="title-hero title-leaf"/>
+          <PixelPet pet="Mushmellow" className="title-companion"/>
+          <span className="stage-mushroom stage-mushroom-left"><MushroomSprite color="#d67b87" size={44}/></span>
+          <span className="stage-mushroom stage-mushroom-right"><MushroomSprite color="#a98bc5" size={38}/></span>
+        </div>
         <div className="title-card">
           <p>Somewhere beneath the old trees, little wonders are waiting.</p>
           <button className="primary" onClick={() => setScreen("login")}>Log in</button>
