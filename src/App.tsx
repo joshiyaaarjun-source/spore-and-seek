@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Forest from "./game/Forest";
+import { PixelCharacter, PixelPet, PixelElder, MushroomSprite } from "./components/PixelArt";
 import { arenas, mushrooms, outfits, pets } from "./data";
 
 type Screen = "title" | "login" | "register" | "character" | "pet" | "game" | "home";
@@ -151,7 +152,7 @@ export default function App() {
         <div className="title-glow" />
         <div className="brand-mark">✦ SPORE <i>&</i> SEEK ✦</div>
         <p className="tagline">a tiny foraging adventure</p>
-        <div className="title-mushrooms">✿　🍄　✧　🍄　✿</div>
+        <div className="title-mushrooms"><MushroomSprite color="#d67b87" size={48}/><MushroomSprite color="#8c7db2" size={38}/><MushroomSprite color="#d6a15e" size={48}/></div>
         <div className="title-card">
           <p>Somewhere beneath the old trees, little wonders are waiting.</p>
           <button className="primary" onClick={() => setScreen("login")}>Log in</button>
@@ -189,7 +190,7 @@ export default function App() {
         <h1>Who will wander?</h1><p>Choose the heart of your story.</p>
         <div className="choice-grid">
           {(["Twix", "Leaf"] as Character[]).map(c => <button key={c} className={`choice ${character === c ? "chosen" : ""}`} onClick={() => setCharacter(c)}>
-            <div className={`avatar ${c.toLowerCase()}`}>{c === "Twix" ? "🍄" : "🌸"}</div>
+            <div className={`avatar ${c.toLowerCase()}`}><PixelCharacter character={c}/></div>
             <h2>{c}</h2><p>{c === "Twix" ? "The curious explorer" : "The gentle forager"}</p>
           </button>)}
         </div>
@@ -202,7 +203,7 @@ export default function App() {
         <button className="back" onClick={() => setScreen("character")}>← Back</button>
         <h1>One little friend</h1><p>Choose exactly one starter companion. More friends can be rescued later.</p>
         <div className="pet-grid">{pets.slice(0, 10).map((p, i) => <button key={p} className={`pet-choice ${pet === p ? "chosen" : ""}`} onClick={() => setPet(p)}>
-          <span>{["🍄","🐦","🫧","🦆","🦊","🦋","🪨","🐰","🌱","🪼"][i]}</span><b>{p}</b>
+          <PixelPet pet={p}/><b>{p}</b>
         </button>)}</div>
         <button className="primary" onClick={beginAdventure}>Begin the adventure ✦</button>
       </section>}
@@ -226,7 +227,7 @@ export default function App() {
       {screen === "home" && <section className="home-screen">
         <button className="back" onClick={() => setScreen("game")}>← Return to the forest</button>
         <h1>Pet Haven</h1><p>A cosy home for every little friend you rescue.</p>
-        <div className="treehouse">✧　🌳　✧<div className="treehouse-rooms">
+        <div className="treehouse"><div className="treehouse-scene" aria-hidden="true"><span className="treehouse-trunk"/><span className="treehouse-leaves"/><span className="treehouse-window"/></div><div className="treehouse-rooms">
           {["Main Lounge","Sleeping Loft","Greenhouse","Play Room","Gift & Memory Room","Rest Nests","Garden Terrace","Pet Kitchen"].map(room => <button key={room} onClick={() => notify(`${room}: this room is planned for the interactive treehouse phase.`)}>{room}</button>)}
         </div></div>
         <h2>Your companion</h2><p>{save.pet} · Mood {save.petMood}%</p>
@@ -236,7 +237,7 @@ export default function App() {
       {modal && <div className="modal-backdrop" onClick={() => setModal(null)}>
         <div className="dialog" onClick={e => e.stopPropagation()}>
           <button className="close" onClick={() => setModal(null)}>×</button>
-          {modal === "mushroom" && activeMushroom && <><div className="mushroom-art" style={{ color: activeMushroom.color }}>✿</div>
+          {modal === "mushroom" && activeMushroom && <><div className="mushroom-art"><MushroomSprite color={activeMushroom.color} size={86}/></div>
             <small>{activeMushroom.rarity}</small><h2>{activeMushroom.name}</h2><p>{activeMushroom.habitat}</p>
             <p>{discoveredSet.has(activeMushroom.id) ? activeMushroom.effect : "A little mystery. Inspect it and add it to your journal."}</p>
             <div className="actions">
@@ -245,7 +246,7 @@ export default function App() {
               <button onClick={() => collectMushroom(activeMushroom.id, "leave")}>Leave</button>
             </div><small>Fictional game effects only. Never eat wild mushrooms.</small>
           </>}
-          {modal === "npc" && <><div className="npc-portrait">🌿</div><small>ELDER WILLOW · FOREST KEEPER</small>
+          {modal === "npc" && <><div className="npc-portrait"><PixelElder/></div><small>ELDER WILLOW · FOREST KEEPER</small>
             <h2>“So you've finally arrived...”</h2>
             <p>The forest has been waiting for a curious soul like you. Could you help me find three little mushrooms hidden along the path?</p>
             <p>Quest progress: {save.discovered.length}/3 · {save.coins} forest coins</p>
